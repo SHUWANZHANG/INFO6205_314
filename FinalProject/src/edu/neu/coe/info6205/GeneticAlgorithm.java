@@ -9,16 +9,15 @@ import java.util.Random;
 
 public class GeneticAlgorithm {
 
-	private static int candidateSize = 5;
 	private static float crossoverRate = (float) 0.7;
-	private static float mutationRate = (float) 0.35;
+	private static float mutationRate = (float) 0.015;
 
 	public static Population evolve(Population population) {
 		Random random = new Random();
 
 		Population newPopulation = new Population(population.getDelivers().length, false);
 
-		newPopulation.getDelivers()[0] = population.getBestRoute();
+		newPopulation.getDelivers()[0] = population.getBestRoute(); // put best to the first route
 
 		// Selection(Roulette Wheel Selection)--- choose 50 route and put it into
 		// newPopulation
@@ -34,7 +33,11 @@ public class GeneticAlgorithm {
 
 			Route parent1 = newPopulation.getDelivers()[random.nextInt(newPopulation.getpopnumber())];
 			Route parent2 = newPopulation.getDelivers()[random.nextInt(newPopulation.getpopnumber())];
-			
+
+			while (parent2 == parent1) {
+				parent2 = newPopulation.getDelivers()[random.nextInt(newPopulation.getpopnumber())];
+			}
+
 			if (Math.random() < crossoverRate) {
 				int cut1 = random.nextInt(parent1.homeNumber()); // decide that child get which genes from parents
 				int cut2 = random.nextInt(parent1.homeNumber());
@@ -43,45 +46,35 @@ public class GeneticAlgorithm {
 				parent1 = list.get(0);
 				parent2 = list.get(1);
 			}
-			
+
 			newPopulation2.getDelivers()[i] = parent1;
 			newPopulation2.getDelivers()[i + 1] = parent2;
 
 		}
-		  
-		 //sort all of the child route 	
+
+		// sort all of the child route
 		sortByFitness(newPopulation2);
-		  
-		  //select the best 50 child forming a new population 
-		for(int i=1; i< newPopulation.getDelivers().length;i++) 
-		{ 
-			newPopulation.getDelivers()[i] =newPopulation2.getDelivers()[i-1]; 
+
+		// select the best 50 child forming a new population
+		for (int i = 1; i < newPopulation.getDelivers().length; i++) {
+			newPopulation.getDelivers()[i] = newPopulation2.getDelivers()[i - 1];
 		}
-		  
-		  //mutate it 		
-		for (int i = 1; i < newPopulation.getDelivers().length; i++) 
-		{ 
-			if(Math.random() < mutationRate) 		
-			{ 
-				int cut1 = random.nextInt(newPopulation.getpopnumber());
-				int cut2 = random.nextInt(newPopulation.getpopnumber());
-		  
-		        if (Math.abs(cut1 - cut2) + 1 != 48) 
-		        {
-		        		//no need to do mutation
-		  
-		        		int insertPoint = random.nextInt(newPopulation.getDelivers()[i].getRoute().size() - (Math.abs(cut1 - cut2) + 1));
-		  
-		        		mutation(newPopulation.getDelivers()[i], cut1, cut2, insertPoint);
-		        } 
-		   } 
-	   }
-		 
-		// return final result
-		return newPopulation;
+
+		population.setRoute(0, newPopulation.getRoute(0));
+
+		// mutate it
+		for (int j = 1; j < population.getpopnumber(); j++) {
+
+			Route route = new Route();
+			for (int i = 0; i < newPopulation.getRoute(j).getRoute().size(); i++) {
+				route.getRoute().set(i, newPopulation.getRoute(j).getRoute().get(i));
+			}
+			
+			population.setRoute(j, mutate(route));
+		}
+
+		return population;
 	}
-
-
 
 	// Roulette Wheel Selection
 	public static Route select(Population population, double randomvalue) {
@@ -158,7 +151,7 @@ public class GeneticAlgorithm {
 		PriorityQueue<Route> pq = new PriorityQueue<>(population.getDelivers().length, new Comparator<Route>() {
 			@Override
 			public int compare(Route o1, Route o2) {
-				return (int) (o2.getFitness()*1000000 - o1.getFitness()*1000000);
+				return (int) (o2.getFitness() * 1000000 - o1.getFitness() * 1000000);
 			}
 		});
 
@@ -174,7 +167,7 @@ public class GeneticAlgorithm {
 
 	// Insertion Mutation, randomly choose a piece from it, and randomly insert it
 	// back.
-	public static void mutation(Route route, int cut1, int cut2, int insertPoint) {
+	public static Route mutation(Route route, int cut1, int cut2, int insertPoint) {
 
 		// randomly choose a piece from it
 		List<Home> list = new ArrayList<>();
@@ -192,6 +185,27 @@ public class GeneticAlgorithm {
 		while (!list.isEmpty()) {
 			route.getRoute().add(insertPoint++, list.remove(0));
 		}
+
+		return route;
+	}
+
+	public static Route mutate(Route route) {
+		Random random = new Random();
+		for (int i = 0; i < route.homeNumber(); i++) {
+			double r = Math.random();
+			if (r < mutationRate) {
+				Home temp = route.getRoute().get(i);
+				int p = random.nextInt(route.homeNumber());
+				while (p == i) {
+					p = random.nextInt(route.homeNumber());
+				}
+				Home choose = route.getRoute().get(p);
+				route.getRoute().set(i, choose);
+				route.getRoute().set(p, temp);
+			}
+		}
+		return route;
+
 	}
 
 }

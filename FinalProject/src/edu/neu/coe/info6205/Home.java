@@ -8,7 +8,7 @@ public class Home {
     private int isOneWayTo;
     
     
-    public Home(int id, int x, int y, int isOneWayTo){
+    public Home(int id, int x, int y){
         this.x = x;
         this.y = y;
         this.id = id;

@@ -22,6 +22,12 @@ public class Population {
         }
 	}
 	
+	public void setRoute(int i, Route route) {
+		
+		delivers[i] = route;
+		
+	}
+	
 	public Route[] getDelivers() {
 		return delivers;
 	}
@@ -86,15 +92,10 @@ public class Population {
         
     }
 
-	public static boolean checkIfAccessbleByOneWay(Route route) {
-		
-		for (int i = route.getRoute().size() - 1; i >= 1; i--) {
-			if(route.getRoute().get(i).getIsOneWayTo() == route.getRoute().get(i-1).getId())
-			{
-				return false;
-			}
-        }
-        return true;
+	
+	public Route getRoute(int i)
+	{
+		return delivers[i];
 	}
 
 	public int getpopnumber()

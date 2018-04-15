@@ -28,9 +28,9 @@ public class Main {
 		System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 
 		System.out.println("After random: ");
-
+		
 		// Initialize population
-		Population pop = new Population(10, true);
+		Population pop = new Population(50, true);
 
 		// calculate all of pi
 		for (int i = 0; i < pop.getDelivers().length; i++) {
@@ -39,36 +39,35 @@ public class Main {
 		}
 
 		// Best one route
-		System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-		System.out.println("The best route is: ");
+		System.out.println();
+		System.out.println(">>>>>>>>>The best route is: ");
 		System.out.println(pop.getBestRoute());
 		System.out.println("Distance: " + pop.getBestRoute().getDistance() + " || Fitness: " + pop.getBestRoute().getFitness());
+		 
 
-		 Interface f = new Interface(pop, initial);
-		 f.setVisible(true);
 
-		// After lundu
 		System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 		System.out.println("After evolve: ");
+		
         
-		for(int t=0; t< 50; t++)
+		for(int t=0; t< 100; t++)
 		{
-			System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-
-//			System.out.println("Evolve-------" + (t+1));
+			//System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+			
 			pop = GeneticAlgorithm.evolve(pop);
-//				
-//			for (int i = 0; i < pop.getDelivers().length; i++) {
-//				System.out.println(pop.getDelivers()[i]);
-//				System.out.println("Distance: " + pop.getDelivers()[i].getDistance() + " || Fitness: " + pop.getDelivers()[i].getFitness());
-//			}
-
+				
+            if((t+1)% 10 == 0)
+            {
 			// Best one route
-			System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-			System.out.println("The best route is: ");
+            	System.out.println("generation is " + (t+1));
+			System.out.println(">>>>>>>>>The best route is: ");
 			System.out.println(pop.getBestRoute());
 			System.out.println( "Distance: " + pop.getBestRoute().getDistance() + " || Fitness: " + pop.getBestRoute().getFitness());
+            }
 		}
+		
+		Interface f = new Interface(pop, initial);
+		f.setVisible(true);
 }
 
 	    public static void readFromLocalData() throws IOException {
@@ -83,8 +82,7 @@ public class Main {
 			if (newLine == null)
 				break;
 			String[] arr = newLine.split(" ");
-			RouteManager.addHome(new Home(Integer.valueOf(arr[0]), Integer.valueOf(arr[1]), Integer.valueOf(arr[2]),
-					Integer.valueOf(arr[3])));
+			RouteManager.addHome(new Home(Integer.valueOf(arr[0]), Integer.valueOf(arr[1]), Integer.valueOf(arr[2])));
 
 		}
 		br.close();

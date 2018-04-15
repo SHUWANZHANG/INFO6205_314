@@ -30,11 +30,11 @@ public class Interface extends JFrame {
         getContentPane().add(label1);
         getContentPane().add(label2);
         
-        setBounds(0, 100, 1000, 1000);
+        setBounds(0, 100, 1200, 1000);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
           
         panel.setLayout(null);
-        panel.setBounds(50,100, 900, 800);
+        panel.setBounds(50,100, 1100, 900);
         panel.setBackground(Color.gray);
         getContentPane().add(panel);
         
@@ -66,11 +66,12 @@ public class Interface extends JFrame {
             {
             	    panel.update(g);
             	    
-            	    population = GeneticAlgorithm.evolve(population);
+            	    for(int i =0 ; i< 20; i++)
+            	    {
+            	    	     population = GeneticAlgorithm.evolve(population);
+            	    }
             	    
             	    Route route = population.getBestRoute();
-            	    
-            	    System.out.println("di---------" + route.getDistance());
             	    
             	    draw(route);
             	    
@@ -91,23 +92,23 @@ public class Interface extends JFrame {
      	
      	for(int i=0; i< route.getRoute().size()-1; i++)
      	{
-     		g.drawLine(10*route.getRoute().get(i).getX(), 10*route.getRoute().get(i).getY(), 10*route.getRoute().get(i+1).getX(), 10*route.getRoute().get(i+1).getY());
+     		g.drawLine(route.getRoute().get(i).getX()/10, route.getRoute().get(i).getY()/10, route.getRoute().get(i+1).getX()/10, route.getRoute().get(i+1).getY()/10);
     
-     		g.fillRect(10*route.getRoute().get(i).getX(), 10*route.getRoute().get(i).getY(), 5, 5);
+     		g.fillRect(route.getRoute().get(i).getX()/10, route.getRoute().get(i).getY()/10, 5, 5);
      		String x = String.valueOf(route.getRoute().get(i).getX());
      		String y = String.valueOf(route.getRoute().get(i).getY());
             String id = String.valueOf(i);
-     		g.drawString(id + "("+ x + "," + y + ")", 10*route.getRoute().get(i).getX(), 10*route.getRoute().get(i).getY());
+     		g.drawString(id + "("+ x + "," + y + ")", route.getRoute().get(i).getX()/10, route.getRoute().get(i).getY()/10);
      	}
 
      	int size = route.getRoute().size();
 
-     	g.fillRect(10*route.getRoute().get(size-1).getX(), 10*route.getRoute().get(size-1).getY(), 5, 5);
+     	g.fillRect(route.getRoute().get(size-1).getX()/10, route.getRoute().get(size-1).getY()/10, 5, 5);
      	String x = String.valueOf(route.getRoute().get(size-1).getX());
      	String y = String.valueOf(route.getRoute().get(size-1).getY());
      	String id = String.valueOf(size-1);
-     	g.drawString(id + "("+ x + "," + y + ")", 10*route.getRoute().get(size-1).getX(), 10*route.getRoute().get(size-1).getY());
-     	g.drawLine(10*route.getRoute().get(size-1).getX(), 10*route.getRoute().get(size-1).getY(), 10*route.getRoute().get(0).getX(), 10*route.getRoute().get(0).getY());
+     	g.drawString(id + "("+ x + "," + y + ")", route.getRoute().get(size-1).getX()/10, route.getRoute().get(size-1).getY()/10);
+     	g.drawLine(route.getRoute().get(size-1).getX()/10, route.getRoute().get(size-1).getY()/10, route.getRoute().get(0).getX()/10, route.getRoute().get(0).getY()/10);
     	    
     }
     

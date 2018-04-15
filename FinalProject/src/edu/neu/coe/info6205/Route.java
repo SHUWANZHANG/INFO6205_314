@@ -7,11 +7,12 @@ public class Route {
 	
 	//private static ArrayList<Home> allhomes = new ArrayList<Home>();
 	
-	private ArrayList<Home> route = new ArrayList<Home>();
+	private ArrayList<Home> route; 
 	private double fitness = 0;
 	
 	
 	public Route() {
+		route = new ArrayList<Home>();
 		
 		for(int i=0; i< RouteManager.getAllhomes().size(); i++)
 		{
@@ -68,8 +69,7 @@ public class Route {
 	 public int homeNumber()
 	 {
 		 return route.size();
-	 }
-	
+	 }	
 	
 	
 	@Override
